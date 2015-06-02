@@ -3,12 +3,10 @@ package com.sleep.spamfilter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-
 //  стемминг Портера
 public class WordStemming {
 
-  private static final Pattern PERFECTIVEGROUND = Pattern.compile("((ив|ивши|ившись|ыв|ывши|ывшись)|((?&lt;=[ая])(в|вши|вшись)))$");  
+  private static final Pattern PERFECTIVEGROUND = Pattern.compile("((ив|ивши|ившись|ыв|ывши|ывшись)|((?<=[ая])(в|вши|вшись)))$");
   
   private static final Pattern REFLEXIVE = Pattern.compile("(с[яь])$");  
 
@@ -32,8 +30,7 @@ public class WordStemming {
   private static final Pattern P = Pattern.compile("ь$");  
   private static final Pattern NN = Pattern.compile("нн$");  
 
-  public static String stem(String word) 
-  {  
+  public static String stem(String word) {
       word = word.toLowerCase();  
       word = word.replace('ё', 'е');
       
@@ -75,10 +72,8 @@ public class WordStemming {
               rv = temp;  
           }  
           word = pre + rv;  
-
-      }  
+      }
 
       return word;  
   }  
-
-}  
+}

@@ -28,109 +28,80 @@ import java.util.Set;
 //		Проверка фраз на спам.
 
 
-
-//  хранимая статистика об 1 слове
-class WordInfo
-{
-  public WordInfo(String word, long spamCount, long totalCount)
-  {
-    Word = word;
-    SpamCount = spamCount;
-    TotalCount = totalCount;
-  }
-  
-  public String Word;
-  public long SpamCount;
-  public long TotalCount;
-  
-  public double SpamProbability() { return (double)SpamCount / TotalCount; }
-}
-
-
 //  обучаемый классификатор
 
 public class Bayes {
+  private Map<String, WordInfo> m_Words;
 
-  Map<String, WordInfo> m_Words;
-		
-  
-  public Bayes()
-  {
+  public Bayes() {
     m_Words = new HashMap<String, WordInfo>();
   }
   
-  
-  Set<String> GetCleanWords(String phrase)
-  {
+  private Set<String> getCleanWords(String phrase) {
     //  разбиваем фразу на слова с применением регулярного выражения, тут же удаляем дубликаты слова
     Set<String> rawWords = new HashSet<String>(Arrays.asList(phrase.split("\\w+")));
     
     //  удаляем короткие слова, в качестве аргумента указана функция отбора слов, записанная в виде лямбда-выражения
     //  (здесь эта функция должна вернуть boolean - удалять или нет)
     rawWords.removeIf(w -> w.length() <= 3);
-    
-  
+
     Set<String> cleanWords = new HashSet<String>(); 
     
     //  переводим все слова в нижний регистр, проводим стемминг  
     //  стемминг (выделяем основу каждого слова, убирая окончания и суффиксы)
-    for(String w : rawWords)
-    {
-      String word = WordStemming.stem(w.toLowerCase()); //  DEBUG: если надо, поправить локаль на universal
+    for (String w : rawWords) {
+      String word = WordStemming.stem(w); //  DEBUG: если надо, поправить локаль на universal
       cleanWords.add(word);
     }    
     
     return cleanWords;
   }
-  
-  
+
   //  обучение
-  public void Learn(String phrase, boolean isSpam)
-  {
+  public void learn(String phrase, boolean isSpam) {
     //  каждое слово заносим в таблицу и/или меняем его счетчики
     int incSpam = isSpam ? 1 : 0;
-    for(String w : GetCleanWords(phrase))
-    {
+
+    for (String w : getCleanWords(phrase)) {
       //  если слова еще нет в таблице, добавляем
       WordInfo wordInfo = m_Words.get(w);
-      if(wordInfo == null)
-      {
-        wordInfo = new WordInfo(w, 0, 0);
+      if (wordInfo == null) {
+        wordInfo = new WordInfo(w);
         m_Words.put(w, wordInfo);
       }
       
       //  меняем его счетчики
       wordInfo.SpamCount += incSpam;
-      wordInfo.TotalCount++;
+      wordInfo.totalCount++;
     }
   }
   
   
   //  Экспорт
-  public Map<String, WordInfo> ExportWordsInfo() { return m_Words; }
+  public Map<String, WordInfo> getExportWordsInfo() {
+    return m_Words;
+  }
   
   //  Импорт
-  public void ImportWordsInfo(Map<String, WordInfo> wordsInfo) { m_Words = wordsInfo; }
+  public void setImportWordsInfo(Map<String, WordInfo> wordsInfo) {
+    m_Words = wordsInfo;
+  }
   
   //  проверка
   //  возвращает вероятность того, что фраза является спамом
-  public double Verify(String phrase)
-  {
+  public double Verify(String phrase) {
     double spamWordsProduction = 1.0;
     double notSpamWordsProduction = 1.0;
     
-    for(String w : GetCleanWords(phrase))
-    {
+    for (String w : getCleanWords(phrase)) {
       WordInfo word = m_Words.get(w);
       
       //  TODO:
       //    пока примем такой вариант: если этого слова не было раньше в выборке при обучении, то мы его просто пропускаем  
-      
-      if(word == null)
-        continue;
-      
-      spamWordsProduction *= word.SpamProbability();
-      notSpamWordsProduction *= (1.0 - word.SpamProbability());
+      if (word != null) {
+        spamWordsProduction *= word.SpamProbability();
+        notSpamWordsProduction *= (1.0 - word.SpamProbability());
+      }
     }
     
     return spamWordsProduction / (spamWordsProduction + notSpamWordsProduction);
