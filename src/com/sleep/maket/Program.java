@@ -28,6 +28,8 @@ public class Program {
 		while (in.hasNextLine())
 			list.add(in.nextLine());
 		String[] array = list.toArray(new String[0]);
+
+
 	}
 
 }
