@@ -32,7 +32,7 @@ public class WordStemming {
 
   public static String stem(String word) {
       word = word.toLowerCase();  
-      word = word.replace('ё', 'е');
+      word = word.replace("ё", "е");
       
       Matcher m = RVRE.matcher(word);  
       if (m.matches()) {  

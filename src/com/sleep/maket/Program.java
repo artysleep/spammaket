@@ -1,9 +1,7 @@
 package com.sleep.maket;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -19,16 +17,21 @@ public class Program {
 	  // Scanner s.readLine()
 	  // BufferedReader b.readLine
 		List<String> list = new ArrayList<String>();
-		Scanner in = null;
+		Scanner in;
 		try {
-			in = new Scanner(new File("D:\\spam.txt"));
+			in = new Scanner(new File("spam.txt"));
+			while (in.hasNextLine()) {
+				list.add(in.nextLine());
+			}
+
+			for (String line : list) {
+				System.out.println(line);
+				System.out.println("*******");
+			}
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		while (in.hasNextLine())
-			list.add(in.nextLine());
-		String[] array = list.toArray(new String[0]);
-
 
 	}
 
