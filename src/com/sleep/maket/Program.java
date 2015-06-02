@@ -1,3 +1,5 @@
+package com.sleep.maket;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -5,7 +7,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-package com.sleep.maket;
+
 
 public class Program {
 
