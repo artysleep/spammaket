@@ -31,10 +31,10 @@ import java.util.Set;
 //  обучаемый классификатор
 
 public class Bayes {
-  private Map<String, WordInfo> m_Words;
+  private Map<String, WordInfo> mWords;
 
   public Bayes() {
-    m_Words = new HashMap<String, WordInfo>();
+    mWords = new HashMap<String, WordInfo>();
   }
   
   private Set<String> getCleanWords(String phrase) {
@@ -64,14 +64,14 @@ public class Bayes {
 
     for (String w : getCleanWords(phrase)) {
       //  если слова еще нет в таблице, добавляем
-      WordInfo wordInfo = m_Words.get(w);
+      WordInfo wordInfo = mWords.get(w);
       if (wordInfo == null) {
         wordInfo = new WordInfo(w);
-        m_Words.put(w, wordInfo);
+        mWords.put(w, wordInfo);
       }
       
       //  меняем его счетчики
-      wordInfo.SpamCount += incSpam;
+      wordInfo.spamCount += incSpam;
       wordInfo.totalCount++;
     }
   }
@@ -79,22 +79,22 @@ public class Bayes {
   
   //  Экспорт
   public Map<String, WordInfo> getExportWordsInfo() {
-    return m_Words;
+    return mWords;
   }
   
   //  Импорт
   public void setImportWordsInfo(Map<String, WordInfo> wordsInfo) {
-    m_Words = wordsInfo;
+    mWords = wordsInfo;
   }
   
   //  проверка
   //  возвращает вероятность того, что фраза является спамом
-  public double Verify(String phrase) {
+  public double verify(String phrase) {
     double spamWordsProduction = 1.0;
     double notSpamWordsProduction = 1.0;
     
     for (String w : getCleanWords(phrase)) {
-      WordInfo word = m_Words.get(w);
+      WordInfo word = mWords.get(w);
       
       //  TODO:
       //    пока примем такой вариант: если этого слова не было раньше в выборке при обучении, то мы его просто пропускаем  

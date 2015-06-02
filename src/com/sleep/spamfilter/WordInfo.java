@@ -2,8 +2,8 @@ package com.sleep.spamfilter;
 
 //  хранимая статистика об 1 слове
 public class WordInfo {
-  public String Word;
-  public long   SpamCount;
+  public String word;
+  public long spamCount;
   public long totalCount;
 
   public WordInfo(String word) {
@@ -11,14 +11,14 @@ public class WordInfo {
   }
 
   public WordInfo(String word, long spamCount, long totalCount) {
-    Word = word;
-    SpamCount = spamCount;
+    this.word = word;
+    this.spamCount = spamCount;
     this.totalCount = totalCount;
   }
 
   public double SpamProbability() {
     if (totalCount > 0) {
-      return (double) SpamCount / totalCount;
+      return (double) spamCount / totalCount;
     } else {
       return 0;
     }
