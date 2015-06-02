@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 //  стемминг Портера
 public class WordStemming {
 
-  private static final Pattern PERFECTIVEGROUND = Pattern.compile("((ив|ивши|ившись|ыв|ывши|ывшись)|((?&lt;=[ая])(в|вши|вшись)))$");  
+  private static final Pattern PERFECTIVEGROUND = Pattern.compile("((ив|ивши|ившись|ыв|ывши|ывшись)|((?<=[ая])(в|вши|вшись)))$");
   
   private static final Pattern REFLEXIVE = Pattern.compile("(с[яь])$");  
 
