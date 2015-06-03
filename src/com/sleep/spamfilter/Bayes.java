@@ -1,10 +1,6 @@
 package com.sleep.spamfilter;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 //	обучение:
@@ -58,6 +54,12 @@ public class Bayes {
   }
 
   //  обучение
+  public void learn(List<String> phrases, boolean isSpam) {
+    for (String phrase : phrases) {
+      learn(phrase, isSpam);
+    }
+  }
+
   public void learn(String phrase, boolean isSpam) {
     //  каждое слово заносим в таблицу и/или меняем его счетчики
     int incSpam = isSpam ? 1 : 0;
@@ -69,7 +71,7 @@ public class Bayes {
         wordInfo = new WordInfo(w);
         mWords.put(w, wordInfo);
       }
-      
+
       //  меняем его счетчики
       wordInfo.spamCount += incSpam;
       wordInfo.totalCount++;

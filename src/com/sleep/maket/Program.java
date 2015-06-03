@@ -1,8 +1,10 @@
 package com.sleep.maket;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import com.sleep.maket.comands.*;
+import com.sleep.spamfilter.Bayes;
+
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,27 +14,51 @@ public class Program {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+		Bayes bayes = new Bayes();
 
+		HashMap<String, ICommandHandler> handlers = new HashMap<>();
 
-	  // Scanner s.readLine()
-	  // BufferedReader b.readLine
-		List<String> list = new ArrayList<String>();
-		Scanner in;
-		try {
-			in = new Scanner(new File("spam.txt"));
-			while (in.hasNextLine()) {
-				list.add(in.nextLine());
+		ICommandHandler helpHandler = new CommandHelp();
+		handlers.put("helpme", helpHandler);
+		handlers.put("help", helpHandler);
+		handlers.put("man", helpHandler);
+		handlers.put("?", helpHandler);
+
+		ICommandHandler learnHandler = new CommandLearn(bayes);
+		handlers.put("learn", learnHandler);
+
+		ICommandHandler validateHandler = new CommandValidate(bayes);
+		handlers.put("validate", validateHandler);
+
+		ICommandHandler statHandler = new CommandStat(bayes);
+		handlers.put("stat", statHandler);
+
+		helpHandler.execute(null);
+
+		Scanner input = new Scanner(System.in);
+		System.out.println("Hello let's fuck some spam =)");
+		while (true) {
+			System.out.println("What should i do?");
+
+			String command = input.nextLine();
+			String[] strings = command.split(" ");
+			List<String> commandParts = Arrays.asList(strings);
+
+			if (commandParts.size() > 0) {
+				ICommandHandler handler = handlers.get(commandParts.get(0));
+				if (handler != null) {
+					Boolean result = handler.execute(commandParts);
+					if (!result) {
+						break;
+					}
+				} else {
+					System.out.println("Do you think that i could " + commandParts.get(0) + " you are crazy. Try to use help");
+				}
 			}
-
-			for (String line : list) {
-				System.out.println(line);
-				System.out.println("*******");
-			}
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			System.out.println();
 		}
 
-	}
+		input.close();
 
+	}
 }
