@@ -10,6 +10,7 @@ public class CommandHelp implements ICommandHandler {
         System.out.println("helpme/help/man/? - Use it to watch manual page");
         System.out.println("learn f/m - learn baes filter with file or message");
         System.out.println("validate - test filter on message");
+        System.out.println("stat - print bayes stats");
 
         return true;
     }

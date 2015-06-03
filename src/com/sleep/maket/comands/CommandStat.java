@@ -13,7 +13,7 @@ public class CommandStat implements ICommandHandler {
 
     @Override
     public boolean execute(List<String> command) {
-        System.out.println("**** Help ****");
+        System.out.println("**** Stat ****");
         System.out.println(bayes);
 
         return true;

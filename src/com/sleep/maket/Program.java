@@ -12,9 +12,8 @@ import java.util.Scanner;
 public class Program {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
 		Bayes bayes = new Bayes();
+		Scanner input = new Scanner(System.in);
 
 		HashMap<String, ICommandHandler> handlers = new HashMap<>();
 
@@ -24,10 +23,10 @@ public class Program {
 		handlers.put("man", helpHandler);
 		handlers.put("?", helpHandler);
 
-		ICommandHandler learnHandler = new CommandLearn(bayes);
+		ICommandHandler learnHandler = new CommandLearn(bayes, input);
 		handlers.put("learn", learnHandler);
 
-		ICommandHandler validateHandler = new CommandValidate(bayes);
+		ICommandHandler validateHandler = new CommandValidate(bayes, input);
 		handlers.put("validate", validateHandler);
 
 		ICommandHandler statHandler = new CommandStat(bayes);
@@ -35,11 +34,9 @@ public class Program {
 
 		helpHandler.execute(null);
 
-		Scanner input = new Scanner(System.in);
 		System.out.println("Hello let's fuck some spam =)");
 		while (true) {
 			System.out.println("What should i do?");
-
 			String command = input.nextLine();
 			String[] strings = command.split(" ");
 			List<String> commandParts = Arrays.asList(strings);
