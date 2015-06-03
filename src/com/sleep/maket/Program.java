@@ -1,9 +1,9 @@
 package com.sleep.maket;
 
-import java.io.BufferedReader;
+import com.sleep.spamfilter.Bayes;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -18,16 +18,29 @@ public class Program {
 
 	  // Scanner s.readLine()
 	  // BufferedReader b.readLine
+
+
+		Bayes bayes = new Bayes();
 		List<String> list = new ArrayList<String>();
 		Scanner in = null;
 		try {
-			in = new Scanner(new File("D:\\spam.txt"));
+			in = new Scanner(new File("spam.txt"), "UTF-8");
+			while (in.hasNextLine()) {
+				list.add(in.nextLine());
+			}
+
+			for (String line : list) {
+				bayes.learn(line, true);
+				//System.out.println(line);
+			}
+
+			System.out.println(bayes);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		while (in.hasNextLine())
-			list.add(in.nextLine());
-		String[] array = list.toArray(new String[0]);
+
+
+
 
 
 	}
