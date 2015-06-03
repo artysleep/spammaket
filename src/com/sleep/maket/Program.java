@@ -59,6 +59,5 @@ public class Program {
 		}
 
 		input.close();
-
 	}
 }
