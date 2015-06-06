@@ -31,6 +31,11 @@ public class SpamFilter {
         bayesFilter.getMessagesInfo().incCounter(1, isSpam);
     }
 
+    public double verify(String message) {
+        double spamProb = bayesFilter.verify(message);
+        return spamProb;
+    }
+
     public void save() {
         Exchanger exchanger = new Exchanger();
         MessagesInfo messagesInfo = bayesFilter.getMessagesInfo();

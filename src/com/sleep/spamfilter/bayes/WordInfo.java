@@ -42,6 +42,20 @@ public class WordInfo {
     }
   }
 
+  public static double hamProbability(WordInfo word, MessagesInfo messagesInfo) {
+    return hamProbability(word, messagesInfo.getHamMessageCount(), messagesInfo.getSpamMessageCount());
+  }
+
+  public static double hamProbability(WordInfo word, long hamMessageCount, long spamMessageCount) {
+    if ((hamMessageCount > 0)&&(spamMessageCount > 0)){
+      double a =(double) word.spamCount / (double) spamMessageCount;
+      double b = (double) word.hamCount / (double) hamMessageCount;
+      return b / (a + b);
+    }   else {
+      return 0;
+    }
+  }
+
   @Override
   public String toString() {
     return String.format("%4d  %4d %s", spamCount, hamCount, word);

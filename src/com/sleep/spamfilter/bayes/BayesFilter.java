@@ -51,7 +51,7 @@ public class BayesFilter {
 
     //  удаляем короткие слова, в качестве аргумента указана функция отбора слов, записанная в виде лямбда-выражения
     //  (здесь эта функция должна вернуть boolean - удалять или нет)
-    rawWords.removeIf(w -> w.length() <= 3);
+    rawWords.removeIf(w -> w.length() <= 2);
 
     Set<String> cleanWords = new HashSet<String>();
     //  переводим все слова в нижний регистр, проводим стемминг  
@@ -120,24 +120,33 @@ public class BayesFilter {
   //  проверка
   //  возвращает вероятность того, что фраза является спамом
   public double verify(String phrase) {
-    double spamWordsProduction = 1.0;
-    double hamWordsProduction = 1.0;
-    
+    double spamWordsProduction = 0;
+    double hamWordsProduction = 0;
+    double wordSpamOrHam = 0.0;
+    double result = 1.0;
+    /*int laplaceFactor = 1;
+    int total = 0;*/
+
+    if (phrase.length()<=10) {result = 0;}
+
+
     for (String w : getCleanWords(phrase)) {
       WordInfo word = mWords.get(w);
-      
       //  TODO:
-      //    пока примем такой вариант: если этого слова не было раньше в выборке при обучении, то мы его просто пропускаем  
-      if (word != null) {
-        spamWordsProduction = word.spamCount/ messagesInfo.getSpamMessageCount();
-        hamWordsProduction = word.hamCount/ messagesInfo.getHamMessageCount();
+      //   пока примем такой вариант: если этого слова не было раньше в выборке при обучении, то мы его просто пропускаем
 
-        /*spamWordsProduction *= word.SpamProbability();
-        notSpamWordsProduction *= (1.0 - word.SpamProbability());*/
+      if (word != null) {
+
+        spamWordsProduction = (double) word.spamCount/ (double) messagesInfo.getSpamMessageCount();
+        hamWordsProduction = (double) word.hamCount/ (double) messagesInfo.getHamMessageCount();
+        wordSpamOrHam = spamWordsProduction/(spamWordsProduction+hamWordsProduction);
+
+        result = result*wordSpamOrHam;
       }
     }
-    
-    return spamWordsProduction / (spamWordsProduction + hamWordsProduction);
+    //System.out.println(wordSpamProbability);
+    return result;
+
   }
 
   @Override
