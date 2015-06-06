@@ -1,5 +1,8 @@
 package com.sleep.spamfilter.bayes;
 
+import org.tartarus.snowball.SnowballStemmer;
+import org.tartarus.snowball.ext.russianStemmer;
+
 import java.util.*;
 
 
@@ -43,19 +46,21 @@ public class BayesFilter {
 
     String regexRemove = "[0-9,!\\+\"\\-\\(\\)/\\|\\.@#\\$%\\^\\&\\*\\?\\<\\>\\{\\}\\[\\]\\\\]";
     String updPhrase = phrase.replaceAll(regexRemove, " ");
-
+    updPhrase = updPhrase.toLowerCase();
     Set<String> rawWords = new HashSet<String>(Arrays.asList(updPhrase.split(".\\s+")));
-    
+
     //  удаляем короткие слова, в качестве аргумента указана функция отбора слов, записанная в виде лямбда-выражения
     //  (здесь эта функция должна вернуть boolean - удалять или нет)
     rawWords.removeIf(w -> w.length() <= 3);
 
-    Set<String> cleanWords = new HashSet<String>(); 
-    
+    Set<String> cleanWords = new HashSet<String>();
     //  переводим все слова в нижний регистр, проводим стемминг  
     //  стемминг (выделяем основу каждого слова, убирая окончания и суффиксы)
+    SnowballStemmer stemmer = new russianStemmer();
     for (String w : rawWords) {
-      String word = WordStemming.stem(w); //  DEBUG: если надо, поправить локаль на universal
+      stemmer.setCurrent(w);
+      stemmer.stem();
+      String word = stemmer.getCurrent(); //  DEBUG: если надо, поправить локаль на universal
       cleanWords.add(word);
     }    
     
