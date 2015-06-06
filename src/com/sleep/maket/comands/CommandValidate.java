@@ -47,7 +47,7 @@ public class CommandValidate implements ICommandHandler {
                     messages.add(fileInput.nextLine());
 
                 for (String message : messages)
-                    System.out.printf("%s\nProbability, that it is spam: %f\n\n", message, bayes.verify(message));
+                    System.out.printf("%s\n Probability that this message is spam: %f\n", message, bayes.verify(message));
             } catch (FileNotFoundException e) {
                 System.out.println("No such file. Learning canceled");
                 return true;
