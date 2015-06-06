@@ -1,4 +1,4 @@
-package com.sleep.spamfilter;
+package com.sleep.spamfilter.bayes;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

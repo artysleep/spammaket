@@ -1,4 +1,4 @@
-package com.sleep.spamfilter;
+package com.sleep.spamfilter.bayes;
 
 import javax.persistence.*;
 

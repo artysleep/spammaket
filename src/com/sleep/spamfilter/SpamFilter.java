@@ -1,5 +1,9 @@
 package com.sleep.spamfilter;
 
+import com.sleep.spamfilter.bayes.BayesFilter;
+import com.sleep.spamfilter.bayes.MessagesInfo;
+import com.sleep.spamfilter.bayes.WordInfo;
+
 import java.util.List;
 import java.util.Map;
 

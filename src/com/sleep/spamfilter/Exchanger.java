@@ -1,5 +1,7 @@
 package com.sleep.spamfilter;
 
+import com.sleep.spamfilter.bayes.MessagesInfo;
+import com.sleep.spamfilter.bayes.WordInfo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
