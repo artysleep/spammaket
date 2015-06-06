@@ -2,19 +2,25 @@ package com.sleep.maket;
 
 import com.sleep.maket.comands.*;
 import com.sleep.spamfilter.Bayes;
+import com.sleep.spamfilter.Exchanger;
+import com.sleep.spamfilter.MessagesInfo;
+import com.sleep.spamfilter.WordInfo;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class Program {
 
 	public static void main(String[] args) {
-		Bayes bayes = new Bayes();
-		Scanner input = new Scanner(System.in);
 
+		Exchanger exchanger = new Exchanger();
+
+		MessagesInfo messagesInfo = exchanger.importMessagesInfo();
+		Map<String, WordInfo> words = exchanger.importWordInfo();
+		exchanger.destroy();
+
+		Bayes bayes = new Bayes(messagesInfo,words);
+		Scanner input = new Scanner(System.in);
 		HashMap<String, ICommandHandler> handlers = new HashMap<>();
 
 		ICommandHandler helpHandler = new CommandHelp();
@@ -32,11 +38,14 @@ public class Program {
 		ICommandHandler statHandler = new CommandStat(bayes);
 		handlers.put("stat", statHandler);
 
+		ICommandHandler saveHandler = new CommandSave(bayes);
+		handlers.put("save", saveHandler);
+
 		helpHandler.execute(null);
 
-		System.out.println("Hello let's fuck some spam =)");
+		System.out.println("Bayes SMS Spam-Filter");
 		while (true) {
-			System.out.println("What should i do?");
+			System.out.println("Do:");
 			String command = input.nextLine();
 			String[] strings = command.split(" ");
 			List<String> commandParts = Arrays.asList(strings);
@@ -49,7 +58,7 @@ public class Program {
 						break;
 					}
 				} else {
-					System.out.println("Do you think that i could " + commandParts.get(0) + " you are crazy. Try to use help");
+					System.out.println("Cant do this: " + commandParts.get(0) + ". Try to use help.");
 				}
 			}
 			System.out.println();
