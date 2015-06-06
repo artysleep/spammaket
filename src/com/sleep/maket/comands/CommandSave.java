@@ -5,9 +5,6 @@ import com.sleep.spamfilter.*;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by ����� on 05.06.2015.
- */
 public class CommandSave implements ICommandHandler {
 
 
