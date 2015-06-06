@@ -1,10 +1,7 @@
 package com.sleep.maket;
 
 import com.sleep.maket.comands.*;
-import com.sleep.spamfilter.Bayes;
-import com.sleep.spamfilter.Exchanger;
-import com.sleep.spamfilter.MessagesInfo;
-import com.sleep.spamfilter.WordInfo;
+import com.sleep.spamfilter.*;
 
 import java.util.*;
 
@@ -13,37 +10,14 @@ public class Program {
 
 	public static void main(String[] args) {
 
-		Exchanger exchanger = new Exchanger();
-
-		MessagesInfo messagesInfo = exchanger.importMessagesInfo();
-		Map<String, WordInfo> words = exchanger.importWordInfo();
-		exchanger.destroy();
-
-		Bayes bayes = new Bayes(messagesInfo,words);
+		SpamFilter spamFilter = new SpamFilter();
 		Scanner input = new Scanner(System.in);
-		HashMap<String, ICommandHandler> handlers = new HashMap<>();
 
-		ICommandHandler helpHandler = new CommandHelp();
-		handlers.put("helpme", helpHandler);
-		handlers.put("help", helpHandler);
-		handlers.put("man", helpHandler);
-		handlers.put("?", helpHandler);
+		Map<String, ICommandHandler> handlers = initCommands(spamFilter, input);
 
-		ICommandHandler learnHandler = new CommandLearn(bayes, input);
-		handlers.put("learn", learnHandler);
+		handlers.get("help").execute(null);
 
-		ICommandHandler validateHandler = new CommandValidate(bayes, input);
-		handlers.put("validate", validateHandler);
-
-		ICommandHandler statHandler = new CommandStat(bayes);
-		handlers.put("stat", statHandler);
-
-		ICommandHandler saveHandler = new CommandSave(bayes);
-		handlers.put("save", saveHandler);
-
-		helpHandler.execute(null);
-
-		System.out.println("Bayes SMS Spam-Filter");
+		System.out.println("Bayes Message Spam-Filter");
 		while (true) {
 			System.out.println("Do:");
 			String command = input.nextLine();
@@ -65,5 +39,29 @@ public class Program {
 		}
 
 		input.close();
+	}
+
+	private static Map<String, ICommandHandler> initCommands(SpamFilter spamFilter, Scanner input) {
+		HashMap<String, ICommandHandler> handlers = new HashMap<>();
+
+		ICommandHandler helpHandler = new CommandHelp();
+		handlers.put("helpme", helpHandler);
+		handlers.put("help", helpHandler);
+		handlers.put("man", helpHandler);
+		handlers.put("?", helpHandler);
+
+		ICommandHandler learnHandler = new CommandLearn(spamFilter, input);
+		handlers.put("learn", learnHandler);
+
+		ICommandHandler validateHandler = new CommandValidate(spamFilter, input);
+		handlers.put("validate", validateHandler);
+
+		ICommandHandler statHandler = new CommandStat(spamFilter);
+		handlers.put("stat", statHandler);
+
+		ICommandHandler saveHandler = new CommandSave(spamFilter);
+		handlers.put("save", saveHandler);
+
+		return handlers;
 	}
 }

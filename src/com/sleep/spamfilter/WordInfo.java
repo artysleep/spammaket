@@ -14,8 +14,9 @@ public class WordInfo {
   @Column(name= "hamCount")
   public long hamCount;
 
-
-
+  public WordInfo() {
+    this("", 0, 0);
+  }
 
   public WordInfo(String word) {
     this(word, 0, 0);
@@ -30,6 +31,7 @@ public class WordInfo {
   public static double spamProbability(WordInfo word, MessagesInfo messagesInfo) {
     return spamProbability(word, messagesInfo.getHamMessageCount(), messagesInfo.getSpamMessageCount());
   }
+
   public static double spamProbability(WordInfo word, long hamMessageCount, long spamMessageCount) {
     if ((hamMessageCount > 0)&&(spamMessageCount > 0)){
       double a =(double) word.spamCount / (double) spamMessageCount;
@@ -39,13 +41,9 @@ public class WordInfo {
       return 0;
     }
   }
-  /*
+
   @Override
   public String toString() {
-    return word + "-" + SpamProbability();
-  }*/
-  @Override
-  public String toString() {
-    return String.format("%4d  %4d %s", spamCount, hamCount, word); /*%4.2f*/
+    return String.format("%4d  %4d %s", spamCount, hamCount, word);
   }
 }

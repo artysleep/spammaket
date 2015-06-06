@@ -1,16 +1,16 @@
 package com.sleep.maket.comands;
 
-import com.sleep.spamfilter.Bayes;
+import com.sleep.spamfilter.SpamFilter;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class CommandValidate implements ICommandHandler {
-    private Bayes bayes;
+    private SpamFilter spamFilter;
     private Scanner input;
 
-    public CommandValidate(Bayes bayes, Scanner input) {
-        this.bayes = bayes;
+    public CommandValidate(SpamFilter spamFilter, Scanner input) {
+        this.spamFilter = spamFilter;
         this.input = input;
     }
 

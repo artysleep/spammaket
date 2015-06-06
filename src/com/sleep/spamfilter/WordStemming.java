@@ -31,9 +31,9 @@ public class WordStemming {
   private static final Pattern NN = Pattern.compile("нн$");  
 
   public static String stem(String word) {
-      word = word.toLowerCase();  
-      word = word.replace("ё", "е");
-      
+      word = word.toLowerCase();
+      word = word.replace("ё", "е"); // TODO: не работает
+
       Matcher m = RVRE.matcher(word);  
       if (m.matches()) {  
           String pre = m.group(1);  
@@ -44,7 +44,7 @@ public class WordStemming {
               temp = ADJECTIVE.matcher(rv).replaceFirst("");  
               if (!temp.equals(rv)) {  
                   rv = temp;  
-                  rv = PARTICIPLE.matcher(rv).replaceFirst("");  
+                  rv = PARTICIPLE.matcher(rv).replaceFirst("");
               } else {  
                   temp = VERB.matcher(rv).replaceFirst("");  
                   if (temp.equals(rv)) {  

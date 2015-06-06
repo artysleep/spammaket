@@ -1,22 +1,20 @@
 package com.sleep.maket.comands;
 
-import com.sleep.spamfilter.Bayes;
-import com.sleep.spamfilter.MessagesInfo;
+import com.sleep.spamfilter.SpamFilter;
 
 import java.util.List;
 
 public class CommandStat implements ICommandHandler {
-    private Bayes bayes;
+    private SpamFilter spamFilter;
 
-    public CommandStat(Bayes bayes) {
-        this.bayes = bayes;
+    public CommandStat(SpamFilter spamFilter) {
+        this.spamFilter = spamFilter;
     }
 
     @Override
     public boolean execute(List<String> command) {
         System.out.println("**** Stat ****");
-        System.out.println(bayes);
-        System.out.println(bayes.getMessagesInfo().getSpamMessageCount() +"/"+ bayes.getMessagesInfo().getHamMessageCount());
+        System.out.println(spamFilter.getStat());
         return true;
     }
 }

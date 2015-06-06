@@ -1,6 +1,7 @@
 package com.sleep.maket.comands;
 
-import com.sleep.spamfilter.Bayes;
+import com.sleep.spamfilter.SpamFilter;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -8,13 +9,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CommandLearn implements ICommandHandler {
-    private Bayes bayes;
+    private SpamFilter spamFilter;
     private Scanner input;
 
-    public CommandLearn(Bayes bayes, Scanner input) {
-        this.bayes = bayes;
+    public CommandLearn(SpamFilter bayes, Scanner input) {
+        this.spamFilter = bayes;
         this.input = input;
-
     }
 
     @Override
@@ -37,12 +37,10 @@ public class CommandLearn implements ICommandHandler {
             spamOrNot.replace("no", "false");
             switch (spamOrNot) {
                 case "yes":
-                    bayes.learn(message, true);
-                    bayes.getMessagesInfo().incCounter(1, true);
+                    spamFilter.learn(message, true);
                     break;
                 case "no":
-                    bayes.learn(message, false);
-                    bayes.getMessagesInfo().incCounter(1, false);
+                    spamFilter.learn(message, false);
                     break;
                 default:
                     System.out.println("I don't understand you. Learning canceled");
@@ -76,12 +74,10 @@ public class CommandLearn implements ICommandHandler {
                 spamOrNot.replace("no", "false");
                 switch (spamOrNot) {
                     case "yes":
-                        bayes.learn(messages, true);
-                        bayes.getMessagesInfo().incCounter(messageCounter, true);
+                        spamFilter.learn(messages, true);
                         break;
                     case "no":
-                        bayes.learn(messages, false);
-                        bayes.getMessagesInfo().incCounter(messageCounter, false);
+                        spamFilter.learn(messages, false);
                         break;
                     default:
                         System.out.println("I don't understand you. Learning canceled");

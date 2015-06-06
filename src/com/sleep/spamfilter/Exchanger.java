@@ -8,9 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Артем on 05.06.2015.
- */
 public class Exchanger {
     Session session;
 
@@ -21,10 +18,10 @@ public class Exchanger {
         session = sessionFactory.openSession();
     }
 
-    public MessagesInfo importMessagesInfo(){
+    public MessagesInfo importMessagesInfo() {
         session.beginTransaction();
         MessagesInfo messagesInfo = (MessagesInfo) session.get(MessagesInfo.class, 1);
-        if (messagesInfo==null){
+        if (messagesInfo == null){
             messagesInfo = new MessagesInfo();
         }
         System.out.println(messagesInfo);
@@ -32,36 +29,33 @@ public class Exchanger {
         return messagesInfo;
     }
 
-
-    public void exportMessagesInfo(MessagesInfo messagesInfo){
+    public void exportMessagesInfo(MessagesInfo messagesInfo) {
         session.beginTransaction();
-        session.save(messagesInfo);
+        session.saveOrUpdate(messagesInfo);
         System.out.println(messagesInfo);
         session.getTransaction().commit();
     }
 
-
-    public Map<String, WordInfo> importWordInfo(){
+    public Map<String, WordInfo> importWordInfo() {
         session.beginTransaction();
 
         List<WordInfo> words = session.createCriteria(WordInfo.class).list();
         Map<String, WordInfo> result = new HashMap<>();
-        for (WordInfo wordInfo : words){
+        for (WordInfo wordInfo : words) {
             result.put(wordInfo.word, wordInfo);
         }
         session.getTransaction().commit();
         return result;
     }
 
-    public void exportWordInfo(Map<String, WordInfo> wordInfos){
+    public void exportWordInfo(Map<String, WordInfo> wordInfos) {
         session.beginTransaction();
-        for (String key : wordInfos.keySet()){
+        for (String key : wordInfos.keySet()) {
             WordInfo wordInfo = wordInfos.get(key);
-            session.save(wordInfo);
+            session.saveOrUpdate(wordInfo);
         }
         session.getTransaction().commit();
     }
-
 
     public void destroy(){
         session.close();

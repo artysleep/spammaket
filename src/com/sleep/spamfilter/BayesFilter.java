@@ -25,17 +25,19 @@ import java.util.*;
 
 
 //  обучаемый классификатор
-public class Bayes {
+public class BayesFilter {
   private Map<String, WordInfo> mWords;
   private MessagesInfo messagesInfo;
 
-  public Bayes(MessagesInfo messagesInfo, Map<String, WordInfo> words) {
+  public BayesFilter(MessagesInfo messagesInfo, Map<String, WordInfo> words) {
     mWords = words;
     this.messagesInfo = messagesInfo;
   }
-  public Bayes() {
+
+  public BayesFilter() {
     this(new MessagesInfo(), new HashMap<String, WordInfo>());
   }
+
   private Set<String> getCleanWords(String phrase) {
     //  разбиваем фразу на слова с применением регулярного выражения, тут же удаляем дубликаты слова
 
@@ -61,13 +63,6 @@ public class Bayes {
   }
 
   //  обучение
-  public void learn(List<String> phrases, boolean isSpam) {
-    for (String phrase : phrases) {
-      learn(phrase, isSpam);
-    }
-  }
-
-  //  обучение
   public void learn(String phrase, boolean isSpam) {
     //  каждое слово заносим в таблицу и/или меняем его счетчики
     /*int incSpam = isSpam ? 1 : 0;
@@ -84,7 +79,7 @@ public class Bayes {
       wordInfo.spamCount += incSpam;
       //wordInfo.totalCount++;
     }*/
-    if (isSpam){
+    if (isSpam) {
       for (String w : getCleanWords(phrase)) {
         //  если слова еще нет в таблице, добавляем
         WordInfo wordInfo = mWords.get(w);
@@ -94,8 +89,7 @@ public class Bayes {
           }
         wordInfo.spamCount++;
       }
-    }
-    else {
+    } else {
         for (String w : getCleanWords(phrase)) {
           //  если слова еще нет в таблице, добавляем
           WordInfo wordInfo = mWords.get(w);
@@ -146,7 +140,7 @@ public class Bayes {
     StringBuilder sb = new StringBuilder();
     for (WordInfo word : mWords.values()){
       sb.append(word.toString());
-      sb.append(" "+WordInfo.spamProbability(word,messagesInfo));
+      sb.append(" "+WordInfo.spamProbability(word, messagesInfo));
       sb.append("\n");
     }
     return sb.toString();

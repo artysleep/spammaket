@@ -1,16 +1,13 @@
 package com.sleep.spamfilter;
 
-
 import javax.persistence.*;
-import java.io.Serializable;
 
 //  хранимая статистика о количестве всех сообщений
 @Entity
 @Table(name= "MessagesInfo")
-public class MessagesInfo implements Serializable {
+public class MessagesInfo {
     @Id
     @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Column(name= "spamMessageCount")
     private long spamMessageCount;
@@ -21,17 +18,15 @@ public class MessagesInfo implements Serializable {
         this(0,0);
     }
 
-
     public MessagesInfo(long spamMessageCount, long hamMessageCount) {
         this.spamMessageCount = spamMessageCount;
         this.hamMessageCount = hamMessageCount;
     }
 
     public void incCounter(long messageCount, boolean isSpam){
-        if (isSpam){
+        if (isSpam) {
             spamMessageCount += messageCount;
-        }
-        else {
+        } else {
             hamMessageCount += messageCount;
         }
     }
@@ -42,7 +37,6 @@ public class MessagesInfo implements Serializable {
     public long getHamMessageCount(){
         return hamMessageCount;
     }
-
 
     @Override
     public String toString() {
