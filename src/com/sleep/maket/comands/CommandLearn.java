@@ -27,7 +27,13 @@ public class CommandLearn implements ICommandHandler {
                 System.out.println("Learning canceled");
                 return true;
             }
-            return learnFromMessage(message);
+            System.out.println("enter phone");
+            String phone = input.nextLine();
+            if (phone.equals("q")) {
+                System.out.println("Learning canceled");
+                return true;
+            }
+            return learnFromMessage(phone, message);
 
         } else if (command.size() > 1 && command.get(1).equals("f")) {
             System.out.println("enter file path");
@@ -44,7 +50,7 @@ public class CommandLearn implements ICommandHandler {
         return true;
     }
 
-    private boolean learnFromMessage(String message) {
+    private boolean learnFromMessage(String phone, String message) {
         System.out.println("is it spam?");
         String spamOrNot = input.nextLine();
         spamOrNot.replace("yes", "y");
@@ -55,10 +61,10 @@ public class CommandLearn implements ICommandHandler {
         spamOrNot.replace("no", "false");
         switch (spamOrNot) {
             case "yes":
-                spamFilter.learn(message, true);
+                spamFilter.learn(phone, message, true);
                 break;
             case "no":
-                spamFilter.learn(message, false);
+                spamFilter.learn(phone, message, false);
                 break;
             default:
                 System.out.println("I don't understand you. Learning canceled");

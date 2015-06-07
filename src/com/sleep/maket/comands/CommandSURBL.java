@@ -1,6 +1,5 @@
 package com.sleep.maket.comands;
 
-import com.sleep.spamfilter.SURBL;
 import com.sleep.spamfilter.SpamFilter;
 
 import java.io.File;
@@ -11,11 +10,11 @@ import java.util.Scanner;
 
 public class CommandSURBL implements ICommandHandler {
     private Scanner input;
-    private SURBL surbl;
+    private SpamFilter spamFilter;
 
-    public CommandSURBL(SURBL surbl, Scanner input) {
+    public CommandSURBL(SpamFilter spamFilter, Scanner input) {
         this.input = input;
-        this.surbl = surbl;
+        this.spamFilter = spamFilter;
     }
 
     @Override
@@ -30,7 +29,7 @@ public class CommandSURBL implements ICommandHandler {
                 return true;
             }
 
-            System.out.printf("URL in message: %s\n", surbl.extractUrls(message));
+            //System.out.printf("URL in message: %s\n", spamFilter.extractUrls(message));
         }
         else if (command.size() > 1 && command.get(1).equals("f")) {
             System.out.println("enter file path");
@@ -46,8 +45,8 @@ public class CommandSURBL implements ICommandHandler {
                 while (fileInput.hasNextLine())
                     messages.add(fileInput.nextLine());
 
-                for (String message : messages)
-                    System.out.printf("%s\nURLs in messages: %s\n", message, surbl.extractUrls(message));
+                //for (String message : messages)
+                   // System.out.printf("%s\nURLs in messages: %s\n", message, spamFilter.extractUrls(message));
             } catch (FileNotFoundException e) {
                 System.out.println("No such file. URL checking");
                 return true;

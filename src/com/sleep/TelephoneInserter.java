@@ -14,10 +14,10 @@ public class TelephoneInserter {
     public static void main(String[] args) {
         try {
             List<String> messages = new ArrayList<String>();
-            PrintWriter writer = new PrintWriter("tns", "UTF-8");
-            Scanner fileInput = new Scanner(new File("ns"), "UTF-8");
+            PrintWriter writer = new PrintWriter("ts", "UTF-8");
+            Scanner fileInput = new Scanner(new File("s"), "UTF-8");
             while (fileInput.hasNextLine()) {
-                writer.println(generatePhoneNumber() + " : " + fileInput.nextLine());
+                writer.println(generatePhoneNumber() + ":" + fileInput.nextLine());
             }
 
             fileInput.close();

@@ -2,10 +2,8 @@ package com.sleep.maket;
 
 import com.sleep.maket.comands.*;
 import com.sleep.spamfilter.*;
-import com.sleep.spamfilter.SURBL;
 
 import java.util.*;
-
 
 public class Program {
 
@@ -13,10 +11,8 @@ public class Program {
 
 		SpamFilter spamFilter = new SpamFilter();
 		Scanner input = new Scanner(System.in);
-		SURBL surbl = new SURBL();
-		TBL tbl = new TBL();
 
-		Map<String, ICommandHandler> handlers = initCommands(spamFilter, input, surbl, tbl);
+		Map<String, ICommandHandler> handlers = initCommands(spamFilter, input);
 
 		handlers.get("help").execute(null);
 
@@ -44,7 +40,7 @@ public class Program {
 		input.close();
 	}
 
-	private static Map<String, ICommandHandler> initCommands(SpamFilter spamFilter, Scanner input, SURBL surbl, TBL tbl) {
+	private static Map<String, ICommandHandler> initCommands(SpamFilter spamFilter, Scanner input) {
 		HashMap<String, ICommandHandler> handlers = new HashMap<>();
 
 		ICommandHandler helpHandler = new CommandHelp();
@@ -65,10 +61,10 @@ public class Program {
 		ICommandHandler saveHandler = new CommandSave(spamFilter);
 		handlers.put("save", saveHandler);
 
-		ICommandHandler urlHandler = new CommandSURBL(surbl, input);
+		ICommandHandler urlHandler = new CommandSURBL(spamFilter, input);
 		handlers.put("url", urlHandler);
 
-		ICommandHandler tblHandler = new CommandTBL(tbl, input);
+		ICommandHandler tblHandler = new CommandVerifyTelephone(spamFilter, input);
 		handlers.put("tbl", tblHandler);
 		return handlers;
 	}
