@@ -1,7 +1,7 @@
 package com.sleep.maket.comands;
 
+import com.sleep.spamfilter.SURBL;
 import com.sleep.spamfilter.SpamFilter;
-import com.sleep.spamfilter.bayes.BayesFilter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,34 +9,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class CommandValidate implements ICommandHandler {
-    SpamFilter bayes;
+public class CommandSURBL implements ICommandHandler {
     private Scanner input;
+    private SURBL surbl;
 
-    public CommandValidate(SpamFilter bayes, Scanner input) {
-        this.bayes = bayes;
+    public CommandSURBL(SURBL surbl, Scanner input) {
         this.input = input;
+        this.surbl = surbl;
     }
 
     @Override
     public boolean execute(List<String> command) {
-        System.out.println("**** Validate ****");
+        System.out.println("**** CheckURL ****");
 
         if (command.size() > 1 && command.get(1).equals("m")) {
             System.out.println("enter message");
             String message = input.nextLine();
             if (message.equals("q")) {
-                System.out.println("Validating canceled");
+                System.out.println("Learning canceled");
                 return true;
             }
 
-            System.out.printf("Probability, that it is spam: %f\n", bayes.verify(message));
-            }
+            System.out.printf("URL in message: %s\n", surbl.extractUrls(message));
+        }
         else if (command.size() > 1 && command.get(1).equals("f")) {
             System.out.println("enter file path");
             String fileName = input.nextLine();
             if (fileName.equals("q")) {
-                System.out.println("Validating canceled");
+                System.out.println("URL checking canceled");
                 return true;
             }
 
@@ -47,13 +47,13 @@ public class CommandValidate implements ICommandHandler {
                     messages.add(fileInput.nextLine());
 
                 for (String message : messages)
-                    System.out.printf("%s\n Probability that this message is spam: %f\n", message, bayes.verify(message));
+                    System.out.printf("%s\nURLs in messages: %s\n", message, surbl.extractUrls(message));
             } catch (FileNotFoundException e) {
-                System.out.println("No such file. Validating canceled");
+                System.out.println("No such file. URL checking");
                 return true;
             }
         } else
-            System.out.println("You should pass correct parameter f or m (file/message). Validating canceled");
+            System.out.println("You should pass correct parameter f or m (file/message). URL checking canceled");
 
         return true;
     }

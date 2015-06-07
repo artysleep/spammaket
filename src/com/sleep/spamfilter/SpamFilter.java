@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class SpamFilter {
     private BayesFilter bayesFilter;
+    private SURBL surbl;
 
     public SpamFilter() {
         Exchanger exchanger = new Exchanger();
@@ -35,6 +36,12 @@ public class SpamFilter {
         double spamProb = bayesFilter.verify(message);
         return spamProb;
     }
+
+    public List<String> surbl(String message) {
+        //surbl.extractUrls(message);
+        return surbl.extractUrls(message);
+    }
+
 
     public void save() {
         Exchanger exchanger = new Exchanger();
