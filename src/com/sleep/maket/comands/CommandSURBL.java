@@ -29,7 +29,7 @@ public class CommandSURBL implements ICommandHandler {
                 return true;
             }
 
-            //System.out.printf("URL in message: %s\n", spamFilter.extractUrls(message));
+            System.out.printf("URL in message: %s\n", spamFilter.verifyUrls(message));
         }
         else if (command.size() > 1 && command.get(1).equals("f")) {
             System.out.println("enter file path");

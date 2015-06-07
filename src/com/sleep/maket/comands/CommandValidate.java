@@ -36,7 +36,7 @@ public class CommandValidate implements ICommandHandler {
                 return true;
             }
 
-            System.out.printf("Probability, that it is spam: %d\n", bayes.verify(phone, message));
+            System.out.printf("Probability, that it is spam: %b\n", bayes.verify(phone, message));
             }
         else if (command.size() > 1 && command.get(1).equals("f")) {
             System.out.println("enter file path");
@@ -53,7 +53,7 @@ public class CommandValidate implements ICommandHandler {
                     int delPos = line.indexOf(":");
                     String phone = line.substring(0, delPos);
                     String message = line.substring(delPos+1);
-                    System.out.printf("%s\n Probability that this message is spam: %d\n", message, bayes.verify(phone, message));
+                    System.out.printf("%s\n Probability that this message is spam: %b\n", message, bayes.verify(phone, message));
                 }
 
             } catch (FileNotFoundException e) {

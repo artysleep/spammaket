@@ -28,6 +28,7 @@
         <mapping class="com.sleep.spamfilter.bayes.MessagesInfo"/>
         <mapping class="com.sleep.spamfilter.bayes.WordInfo"/>
         <mapping class="com.sleep.spamfilter.blacklist.PhoneNumber"/>
+        <mapping class="com.sleep.spamfilter.urlblacklist.URLRecord"/>
 
     </session-factory>
 </hibernate-configuration>

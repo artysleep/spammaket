@@ -3,6 +3,7 @@ package com.sleep.spamfilter;
 import com.sleep.spamfilter.bayes.MessagesInfo;
 import com.sleep.spamfilter.bayes.WordInfo;
 import com.sleep.spamfilter.blacklist.PhoneNumber;
+import com.sleep.spamfilter.urlblacklist.URLRecord;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -21,7 +22,7 @@ public class Exchanger {
 
     public MessagesInfo importMessagesInfo() {
         session.beginTransaction();
-        MessagesInfo messagesInfo = (MessagesInfo) session.get(MessagesInfo.class, 1);
+        MessagesInfo messagesInfo = (MessagesInfo) session.get(MessagesInfo.class, 0);
         if (messagesInfo == null){
             messagesInfo = new MessagesInfo();
         }
@@ -58,17 +59,32 @@ public class Exchanger {
         session.getTransaction().commit();
     }
 
-    public Set<PhoneNumber> importBlackList() {
+    public Set<PhoneNumber> importPhoneBlackList() {
         session.beginTransaction();
         List<PhoneNumber> numbers = session.createCriteria(PhoneNumber.class).list();
         session.getTransaction().commit();
         return new HashSet<>(numbers);
     }
 
-    public void exportBlackList(Set<PhoneNumber> numbers) {
+    public void exportPhoneBlackList(Set<PhoneNumber> numbers) {
         session.beginTransaction();
         for (PhoneNumber number : numbers) {
             session.saveOrUpdate(number);
+        }
+        session.getTransaction().commit();
+    }
+
+    public Set<URLRecord> importURLBlackList() {
+        session.beginTransaction();
+        List<URLRecord> urls = session.createCriteria(URLRecord.class).list();
+        session.getTransaction().commit();
+        return new HashSet<>(urls);
+    }
+
+    public void exportURLBlackList(Set<URLRecord> urls) {
+        session.beginTransaction();
+        for (URLRecord url : urls) {
+            session.saveOrUpdate(url);
         }
         session.getTransaction().commit();
     }

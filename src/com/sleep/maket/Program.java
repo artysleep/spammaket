@@ -66,6 +66,12 @@ public class Program {
 
 		ICommandHandler tblHandler = new CommandVerifyTelephone(spamFilter, input);
 		handlers.put("tbl", tblHandler);
+
+		ICommandHandler exitHandler = new CommandExit(saveHandler);
+		handlers.put("exit", exitHandler);
+		handlers.put("quit", exitHandler);
+		handlers.put("q", exitHandler);
+
 		return handlers;
 	}
 }
