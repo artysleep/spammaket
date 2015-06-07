@@ -27,25 +27,7 @@ public class CommandLearn implements ICommandHandler {
                 System.out.println("Learning canceled");
                 return true;
             }
-            System.out.println("is it spam?");
-            String spamOrNot = input.nextLine();
-            spamOrNot.replace("yes", "y");
-            spamOrNot.replace("yes", "t");
-            spamOrNot.replace("yes", "true");
-            spamOrNot.replace("no", "n");
-            spamOrNot.replace("no", "f");
-            spamOrNot.replace("no", "false");
-            switch (spamOrNot) {
-                case "yes":
-                    spamFilter.learn(message, true);
-                    break;
-                case "no":
-                    spamFilter.learn(message, false);
-                    break;
-                default:
-                    System.out.println("I don't understand you. Learning canceled");
-                    return true;
-            }
+            return learnFromMessage(message);
 
         } else if (command.size() > 1 && command.get(1).equals("f")) {
             System.out.println("enter file path");
@@ -54,44 +36,68 @@ public class CommandLearn implements ICommandHandler {
                 System.out.println("Learning canceled");
                 return true;
             }
-
-            try {
-                List<String> messages = new ArrayList<String>();
-                Scanner fileInput = new Scanner(new File(fileName), "UTF-8");
-                int messageCounter = 0;
-                while (fileInput.hasNextLine()) {
-                    messages.add(fileInput.nextLine());
-                    messageCounter++;
-                }
-                System.out.println("\nCount of messages: " + messageCounter + "\n");
-                System.out.println("is it spam?");
-                String spamOrNot = input.nextLine();
-                spamOrNot.replace("t","yes");
-                spamOrNot.replace("yes", "y");
-                spamOrNot.replace("yes", "true");
-                spamOrNot.replace("no", "n");
-                spamOrNot.replace("no", "f");
-                spamOrNot.replace("no", "false");
-                switch (spamOrNot) {
-                    case "yes":
-                        spamFilter.learn(messages, true);
-                        break;
-                    case "no":
-                        spamFilter.learn(messages, false);
-                        break;
-                    default:
-                        System.out.println("I don't understand you. Learning canceled");
-                        return true;
-                }
-            } catch (FileNotFoundException e) {
-                System.out.println("No such file. Learning canceled");
-                return true;
-            }
-
+            return learnFromFile(fileName);
         } else {
             System.out.println("You should pass correct parameter f or m (file/message). Learning canceled");
         }
 
+        return true;
+    }
+
+    private boolean learnFromMessage(String message) {
+        System.out.println("is it spam?");
+        String spamOrNot = input.nextLine();
+        spamOrNot.replace("yes", "y");
+        spamOrNot.replace("yes", "t");
+        spamOrNot.replace("yes", "true");
+        spamOrNot.replace("no", "n");
+        spamOrNot.replace("no", "f");
+        spamOrNot.replace("no", "false");
+        switch (spamOrNot) {
+            case "yes":
+                spamFilter.learn(message, true);
+                break;
+            case "no":
+                spamFilter.learn(message, false);
+                break;
+            default:
+                System.out.println("I don't understand you. Learning canceled");
+                return true;
+        }
+        return false;
+    }
+
+    public boolean learnFromFile(String fileName) {
+        try {
+            List<String> messages = new ArrayList<String>();
+            Scanner fileInput = new Scanner(new File(fileName), "UTF-8");
+            while (fileInput.hasNextLine()) {
+                messages.add(fileInput.nextLine());
+            }
+            System.out.println("\nCount of messages: " + messages.size() + "\n");
+            System.out.println("is it spam?");
+            String spamOrNot = input.nextLine();
+            spamOrNot.replace("t","yes");
+            spamOrNot.replace("yes", "y");
+            spamOrNot.replace("yes", "true");
+            spamOrNot.replace("no", "n");
+            spamOrNot.replace("no", "f");
+            spamOrNot.replace("no", "false");
+            switch (spamOrNot) {
+                case "yes":
+                    spamFilter.learn(messages, true);
+                    break;
+                case "no":
+                    spamFilter.learn(messages, false);
+                    break;
+                default:
+                    System.out.println("I don't understand you. Learning canceled");
+                    return true;
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("No such file. Learning canceled");
+            return true;
+        }
         return true;
     }
 }

@@ -20,5 +20,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Hybernate" level="project" />
     <orderEntry type="library" name="SnowBallStemmer" level="project" />
+    <orderEntry type="library" name="Hibernate" level="project" />
+    <orderEntry type="library" name="SnowBallStemmer" level="project" />
   </component>
 </module>
