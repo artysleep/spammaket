@@ -3,9 +3,12 @@ package com.sleep.spamfilter;
 import com.sleep.spamfilter.bayes.BayesFilter;
 import com.sleep.spamfilter.bayes.MessagesInfo;
 import com.sleep.spamfilter.bayes.WordInfo;
+import com.sleep.spamfilter.blacklist.PhoneNumber;
+import com.sleep.spamfilter.blacklist.TBL;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class SpamFilter {
     private BayesFilter bayesFilter;
@@ -17,10 +20,11 @@ public class SpamFilter {
 
         MessagesInfo messagesInfo = exchanger.importMessagesInfo();
         Map<String, WordInfo> words = exchanger.importWordInfo();
+        Set<PhoneNumber> blackList = exchanger.importBlackList();
         exchanger.destroy();
 
         this.bayesFilter = new BayesFilter(messagesInfo, words);
-        this.tbl = new TBL();
+        this.tbl = new TBL(blackList);
         this.surbl = new SURBL();
     }
 
@@ -59,9 +63,11 @@ public class SpamFilter {
         Exchanger exchanger = new Exchanger();
         MessagesInfo messagesInfo = bayesFilter.getMessagesInfo();
         Map<String, WordInfo> words = bayesFilter.getExportWordsInfo();
+        Set<PhoneNumber> blackList = tbl.getBlackList();
 
         exchanger.exportMessagesInfo(messagesInfo);
         exchanger.exportWordInfo(words);
+        exchanger.exportBlackList(blackList);
 
         exchanger.destroy();
     }

@@ -2,13 +2,12 @@ package com.sleep.spamfilter;
 
 import com.sleep.spamfilter.bayes.MessagesInfo;
 import com.sleep.spamfilter.bayes.WordInfo;
+import com.sleep.spamfilter.blacklist.PhoneNumber;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Exchanger {
     Session session;
@@ -55,6 +54,21 @@ public class Exchanger {
         for (String key : wordInfos.keySet()) {
             WordInfo wordInfo = wordInfos.get(key);
             session.saveOrUpdate(wordInfo);
+        }
+        session.getTransaction().commit();
+    }
+
+    public Set<PhoneNumber> importBlackList() {
+        session.beginTransaction();
+        List<PhoneNumber> numbers = session.createCriteria(PhoneNumber.class).list();
+        session.getTransaction().commit();
+        return new HashSet<>(numbers);
+    }
+
+    public void exportBlackList(Set<PhoneNumber> numbers) {
+        session.beginTransaction();
+        for (PhoneNumber number : numbers) {
+            session.saveOrUpdate(number);
         }
         session.getTransaction().commit();
     }
